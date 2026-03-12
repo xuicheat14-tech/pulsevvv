@@ -2,23 +2,25 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pulse Visuals | Double Video Edition</title>
     <style>
-        /* 1. ГЛАВНЫЕ НАСТРОЙКИ */
+        /* 1. ОБЩИЕ НАСТРОЙКИ */
+        html {
+            scroll-behavior: smooth; /* Плавный скролл */
+        }
+
         body { 
             margin: 0; 
             padding: 0; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
-            min-height: 100vh; 
-            font-family: 'Segoe UI', sans-serif; 
-            overflow: hidden; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             background-color: #0d0d0d; 
+            color: white;
+            overflow-x: hidden; /* Убираем боковую полосу прокрутки */
+            overflow-y: auto;   /* Разрешаем листать вниз */
         }
 
-        /* 2. ФОНОВОЕ ВИДЕО (на весь экран) */
+        /* 2. ФОНОВОЕ ВИДЕО (зафиксировано) */
         .video-background { 
             position: fixed; 
             top: 0; 
@@ -26,33 +28,36 @@
             width: 100%; 
             height: 100%; 
             z-index: -2; 
-            overflow: hidden; 
         }
         .video-background video { 
-            min-width: 100%; 
-            min-height: 100%; 
+            width: 100%; 
+            height: 100%; 
             object-fit: cover; 
-            filter: brightness(35%) blur(8px); /* Фон стал чуть темнее и мягче */
+            filter: brightness(30%) blur(5px); 
         }
 
-        /* 3. КОНТЕНТ ПО ЦЕНТРУ */
-        .content { 
-            z-index: 1; 
+        /* 3. ПЕРВЫЙ ЭКРАН (Контент по центру) */
+        .first-screen {
             display: flex; 
             flex-direction: column; 
             align-items: center; 
+            justify-content: center; 
+            min-height: 100vh; /* Занимает ровно один экран */
+            width: 100%;
+            position: relative;
+            z-index: 1;
         }
 
-        /* НОВЫЙ КОНТЕЙНЕР ДЛЯ YOUTUBE */
         .video-container {
-            width: 850px;           /* Увеличенный размер */
-            aspect-ratio: 16 / 9;   /* Пропорции YouTube */
+            width: 90%;
+            max-width: 850px;
+            aspect-ratio: 16 / 9;
             border-radius: 20px;
-            overflow: hidden;       /* Магия: обрезает углы видео внутри */
-            box-shadow: 0 20px 50px rgba(0,0,0,0.9), 0 0 40px rgba(74, 14, 143, 0.5);
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.9), 0 0 40px rgba(125, 42, 232, 0.3);
             margin: 40px 0;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            background: #000;       /* Черный фон, пока грузится видео */
+            background: #000;
         }
 
         .video-container iframe {
@@ -77,18 +82,72 @@
             cursor: pointer; 
             backdrop-filter: blur(10px); 
         }
-        .pill:hover { transform: scale(1.05); border-color: #7d2ae8; color: #ffffff; box-shadow: 0 0 30px rgba(125, 42, 232, 0.4); }
+        .pill:hover { 
+            transform: scale(1.05); 
+            border-color: #7d2ae8; 
+            box-shadow: 0 0 30px rgba(125, 42, 232, 0.4); 
+        }
 
-        /* 4. ВРАЩАЮЩЕЕСЯ ЛОГО */
+        /* 4. БЛОК ПРЕИМУЩЕСТВ (Нижний экран) */
+        .benefits {
+            padding: 100px 20px;
+            background: rgba(0, 0, 0, 0.7); /* Подложка, чтобы текст читался лучше */
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .benefits h2 {
+            font-size: 3rem;
+            margin-bottom: 50px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .benefits-grid {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 280px;
+            text-align: center;
+            transition: 0.4s;
+            backdrop-filter: blur(5px);
+        }
+
+        .card:hover {
+            transform: translateY(-15px);
+            background: rgba(125, 42, 232, 0.1);
+            border-color: #7d2ae8;
+        }
+
+        .card h3 {
+            color: #7d2ae8;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        /* 5. ЛОГОТИП */
         @keyframes rotate-360 { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         .corner-logo { 
             position: fixed; 
             bottom: 30px; 
             left: 30px; 
-            width: 70px; 
+            width: 60px; 
             z-index: 100; 
-            opacity: 0.8; 
-            animation: rotate-360 10s linear infinite; 
+            opacity: 0.6; 
+            animation: rotate-360 15s linear infinite; 
         }
     </style>
 </head>
@@ -100,8 +159,7 @@
         </video>
     </div>
 
-    <div class="content">
-        
+    <div class="first-screen">
         <a href="https://pulsevisuals.pro/" target="_blank" class="link-wrapper">
             <div class="pill">PULSE VISUALS</div>
         </a>
@@ -118,11 +176,28 @@
         <a href="#" class="link-wrapper">
             <div class="pill">СВЯЗАТЬСЯ</div>
         </a>
-
     </div>
+
+    <section class="benefits">
+        <h2>Преимущества</h2>
+        <div class="benefits-grid">
+            <div class="card">
+                <h3>Содержание</h3>
+                <p>Наши визуальные эффекты полны функцианалом и уникальными визуальнымми эффектами.</p>
+            </div>
+            <div class="card">
+                <h3>Доступность</h3>
+                <p> Наш клиент разрешшен на всех серверах! самые популярные сервера где мы разрешены - FunTime, ReallyWorld, WellMine, HolyWorld и так далее 
+                </p>
+            </div>
+            <div class="card">
+                <h3>Поддержка</h3>
+                <p>Поддержка всегда отвечает на ваши вопросы, чтобы не случилось!</p>
+            </div>
+        </div>
+    </section>
 
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAXCAMAAAAvFN9lAAAAaVBMVEVHcExdQN5aPdlZPNhfQuJmSOtjRediROZiReZjRehYPNdgQuNgQuJVOdJgQuNcP9xZPNheQeBeQeBgQ+NbP9xaPdpdQN9VOdJaPdpZPNhVOdJTN89UONBSNsxUONFRNcxPM8hQNMpOM8ivHtmzAAAAI3RSTlMAHV4FUOKN/8PhLeyrGPhpl//k1MENOUDv/3zX6PbI/6joxapGaGQAAAC2SURBVHgBdc3RDoMgDIXhAk4c6qRMcDAV9f0fcjpuNNIv6dWfk8IF40ASxYPRtZSlIJeVfBZUVLWUTUtE/pKy7oio0bxlpbKt7bHZx6XNRWewsw2aIRe7j3dQGGwyU6H9x4LViPweWe974Vyo0bjkFIevD+3oPR7kAdSQKNFNvoDQJ9UB5jGZuY6jAstOYP7+xbjfbOGqTZa40wKy1LpHDoQQ4+qoyLa4MaDwabFkZEsQQBpuL3+BjA4LC5LeMgAAAABJRU5ErkJggg==" class="corner-logo" alt="Logo">
 
-</body>
-
+</body> 
 </html>
