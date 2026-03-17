@@ -128,6 +128,179 @@
     </style>
 </head>
 <body>
+    
+    <div class="video-bg">
+    <video autoplay loop muted playsinline controls style="display:block !important; opacity:1 !important;">
+        <source src="bg.mp4" type="video/mp4">
+        <source src="https://v1.pinimg.com/videos/mc/expMp4/7e/da/75/7eda751f28b2610f443598762514138a_t1.mp4" type="video/mp4">
+    </video>
+</div>
+
+    <nav class="navbar">
+        <a href="#home" class="nav-link">Главная</a>
+        <a href="#about" class="nav-link">О проекте</a>
+        <a href="#features" class="nav-link">Обзор</a>
+        <a href="https://t.me/DaWikcx" target="_blank" class="nav-link">Связаться</a>
+    </nav>
+
+    <section id="home" class="section">
+        <h1 style="font-size: clamp(2rem, 8vw, 5rem); letter-spacing: 10px; margin: 0; text-shadow: 0 0 30px rgba(125,42,232,0.5);">PULSE VISUALS</h1>
+        <p style="font-size: 1.2rem; opacity: 0.8; margin-top: 10px;">Лучшие визуальные эффекты в твоем распоряжении.</p>
+        <br>
+        <a href="https://pulsevisuals.pro/" target="_blank" class="pill">ПЕРЕЙТИ НА САЙТ</a>
+    </section>
+
+    <section id="about" class="section">
+        <div class="content-card">
+            <h2 style="font-size: 2.5rem; color: #7d2ae8;">О проекте</h2>
+            <p style="line-height: 1.8; font-size: 1.1rem; opacity: 0.9;">
+                Мы создаем визуальные моды для Minecraft как для PvP, так и для PvE. Наша цель — предоставить игрокам уникальные и качественные визуальные эффекты, которые улучшат игровой опыт и позволят выделиться среди других.
+            </p>
+        </div>
+    </section>
+
+    <section id="features" class="section">
+        <h2 style="margin-bottom: 20px; font-size: 2.5rem;">Наш видеообзор</h2>
+        <div class="video-wrapper">
+            <iframe 
+                src="https://www.youtube.com/embed/0XMJi4VXB1U" 
+                title="YouTube video player" 
+                allowfullscreen>
+            </iframe>
+        </div>
+    </section>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pulse Visuals | Minecraft Mods</title>
+    <style>
+        /* 1. ГЛОБАЛЬНЫЕ НАСТРОЙКИ */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden; /* Дал возможность скроллить вниз, но убрал боковой ебанатзм */
+            font-family: 'Segoe UI', sans-serif;
+            background: transparent;
+            color: white;
+            scroll-behavior: smooth;
+        }
+
+        /* 2. ФОНОВОЕ ВИДЕО */
+        .video-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            background: #000; /* Если видос сдохнет, будет хоть черный фон */
+        }
+        
+        .video-bg video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            filter: brightness(35%) contrast(110%);
+        }
+
+        /* 3. НАВБАР */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(15px);
+            display: flex;
+            justify-content: center;
+            padding: 20px 0;
+            z-index: 9999;
+            border-bottom: 1px solid rgba(125, 42, 232, 0.3);
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            margin: 0 25px;
+            font-size: 13px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: 0.3s;
+            opacity: 0.7;
+        }
+
+        .nav-link:hover {
+            color: #7d2ae8;
+            opacity: 1;
+            text-shadow: 0 0 15px #7d2ae8;
+        }
+
+        /* 4. СЕКЦИИ */
+        .section {
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 100px 0; /* Чтобы навбар контент не ебал */
+            box-sizing: border-box;
+        }
+
+        .content-card {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 50px;
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 800px;
+            margin: 0 20px;
+        }
+
+        .video-wrapper {
+            width: 90%;
+            max-width: 850px;
+            aspect-ratio: 16 / 9;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(125, 42, 232, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 30px;
+        }
+
+        .video-wrapper iframe { width: 100%; height: 100%; border: none; }
+
+        .pill {
+            background: #7d2ae8;
+            padding: 18px 50px;
+            border-radius: 50px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.4s;
+            display: inline-block;
+            border: 1px solid rgba(255,255,255,0.2);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .pill:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 10px 30px rgba(125, 42, 232, 0.6);
+            background: #9146ff;
+        }
+    </style>
+</head>
+<body>
 <button class="pill" id="pricolBtn" style="background: #ff0050; border: none; margin-top: 20px; cursor: pointer;">
     СЕКРЕТНЫЙ МОД
 </button>
