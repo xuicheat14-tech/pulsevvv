@@ -3,202 +3,193 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pulse Visuals | Double Video Edition</title>
+    <title>Pulse Visuals | Minecraft Mods</title>
     <style>
-        /* 1. ОБЩИЕ НАСТРОЙКИ */
-        html {
-            scroll-behavior: smooth; /* Плавный скролл */
-        }
-
-        body { 
-            margin: 0; 
-            padding: 0; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background-color: #0d0d0d; 
-            color: white;
-            overflow-x: hidden; /* Убираем боковую полосу прокрутки */
-            overflow-y: auto;   /* Разрешаем листать вниз */
-        }
-
-        /* 2. ФОНОВОЕ ВИДЕО (зафиксировано) */
-        .video-background { 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            z-index: -2; 
-        }
-        .video-background video { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
-            filter: brightness(30%) blur(5px); 
-        }
-
-        /* 3. ПЕРВЫЙ ЭКРАН (Контент по центру) */
-        .first-screen {
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
-            min-height: 100vh; /* Занимает ровно один экран */
+        /* 1. ГЛОБАЛЬНЫЕ НАСТРОЙКИ */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
             width: 100%;
-            position: relative;
-            z-index: 1;
+            overflow: hidden; /* Дал возможность скроллить вниз, но убрал боковой ебанатзм */
+            font-family: 'Segoe UI', sans-serif;
+            background: transparent;
+            color: white;
+            scroll-behavior: smooth;
         }
 
-        .video-container {
+        /* 2. ФОНОВОЕ ВИДЕО */
+        .video-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            background: #000; /* Если видос сдохнет, будет хоть черный фон */
+        }
+        
+        .video-bg video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            filter: brightness(35%) contrast(110%);
+        }
+
+        /* 3. НАВБАР */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(15px);
+            display: flex;
+            justify-content: center;
+            padding: 20px 0;
+            z-index: 9999;
+            border-bottom: 1px solid rgba(125, 42, 232, 0.3);
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            margin: 0 25px;
+            font-size: 13px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: 0.3s;
+            opacity: 0.7;
+        }
+
+        .nav-link:hover {
+            color: #7d2ae8;
+            opacity: 1;
+            text-shadow: 0 0 15px #7d2ae8;
+        }
+
+        /* 4. СЕКЦИИ */
+        .section {
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 100px 0; /* Чтобы навбар контент не ебал */
+            box-sizing: border-box;
+        }
+
+        .content-card {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 50px;
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 800px;
+            margin: 0 20px;
+        }
+
+        .video-wrapper {
             width: 90%;
             max-width: 850px;
             aspect-ratio: 16 / 9;
             border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.9), 0 0 40px rgba(125, 42, 232, 0.3);
-            margin: 40px 0;
+            box-shadow: 0 0 50px rgba(125, 42, 232, 0.4);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            background: #000;
+            margin-top: 30px;
         }
 
-        .video-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
+        .video-wrapper iframe { width: 100%; height: 100%; border: none; }
 
-        /* КНОПКИ */
-        .link-wrapper { text-decoration: none; }
-        .pill { 
-            background: linear-gradient(135deg, rgba(26, 1, 54, 0.9) 0%, rgba(46, 2, 89, 0.9) 50%, rgba(26, 1, 54, 0.9) 100%); 
-            border: 1px solid rgba(125, 42, 232, 0.6); 
-            border-radius: 50px; 
-            padding: 15px 50px; 
-            color: #e0d1ff; 
-            font-size: 14px; 
-            font-weight: bold; 
-            text-transform: uppercase; 
-            letter-spacing: 5px; 
-            transition: 0.4s all; 
-            cursor: pointer; 
-            backdrop-filter: blur(10px); 
+        .pill {
+            background: #7d2ae8;
+            padding: 18px 50px;
+            border-radius: 50px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.4s;
+            display: inline-block;
+            border: 1px solid rgba(255,255,255,0.2);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
         .pill:hover { 
-            transform: scale(1.05); 
-            border-color: #7d2ae8; 
-            box-shadow: 0 0 30px rgba(125, 42, 232, 0.4); 
-        }
-
-        /* 4. БЛОК ПРЕИМУЩЕСТВ (Нижний экран) */
-        .benefits {
-            padding: 100px 20px;
-            background: rgba(0, 0, 0, 0.7); /* Подложка, чтобы текст читался лучше */
-            position: relative;
-            z-index: 2;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        .benefits h2 {
-            font-size: 3rem;
-            margin-bottom: 50px;
-            text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-        }
-
-        .benefits-grid {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            flex-wrap: wrap;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .card {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 40px 30px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            width: 280px;
-            text-align: center;
-            transition: 0.4s;
-            backdrop-filter: blur(5px);
-        }
-
-        .card:hover {
-            transform: translateY(-15px);
-            background: rgba(125, 42, 232, 0.1);
-            border-color: #7d2ae8;
-        }
-
-        .card h3 {
-            color: #7d2ae8;
-            margin-bottom: 15px;
-            font-size: 1.5rem;
-        }
-
-        /* 5. ЛОГОТИП */
-        @keyframes rotate-360 { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        .corner-logo { 
-            position: fixed; 
-            bottom: 30px; 
-            left: 30px; 
-            width: 60px; 
-            z-index: 100; 
-            opacity: 0.6; 
-            animation: rotate-360 15s linear infinite; 
+            transform: translateY(-5px); 
+            box-shadow: 0 10px 30px rgba(125, 42, 232, 0.6);
+            background: #9146ff;
         }
     </style>
 </head>
 <body>
+<button class="pill" id="pricolBtn" style="background: #ff0050; border: none; margin-top: 20px; cursor: pointer;">
+    СЕКРЕТНЫЙ МОД
+</button>
 
-    <div class="video-background">
-        <video autoplay loop muted playsinline>
-            <source src="https://v1.pinimg.com/videos/mc/expMp4/79/43/26/794326873cc07879bef5828449d374a5_t1.mp4" type="video/mp4">
-        </video>
-    </div>
+<div id="kentPricol" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10000;">
+    <img src="kent.png" alt="Прикол" style="max-width: 300px; filter: drop-shadow(0 0 20px #7d2ae8);">
+</div>
 
-    <div class="first-screen">
-        <a href="https://pulsevisuals.pro/" target="_blank" class="link-wrapper">
-            <div class="pill">PULSE VISUALS</div>
-        </a>
+<script>
+    const btn = document.getElementById('pricolBtn');
+    const box = document.getElementById('kentPricol');
 
-        <div class="video-container">
-            <iframe 
-                src="https://www.youtube.com/embed/0XMJi4VXB1U?rel=0&autoplay=0" 
-                title="PulseVisuals Trailer"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                allowfullscreen>
-            </iframe>
-        </div>
+    btn.addEventListener('click', function() {
+        if (box.style.display === 'none') {
+            box.style.display = 'block';
+            // Можно еще звук какой-то добавить для испуга, если хочешь
+        } else {
+            box.style.display = 'none';
+        }
+    });
+</script>
+    
+    <div class="video-bg">
+    <video autoplay loop muted playsinline controls style="display:block !important; opacity:1 !important;">
+        <source src="bg.mp4" type="video/mp4">
+        <source src="https://v1.pinimg.com/videos/mc/expMp4/7e/da/75/7eda751f28b2610f443598762514138a_t1.mp4" type="video/mp4">
+    </video>
+</div>
 
-        <a href="https://t.me/FlerniV1" class="link-wrapper">
-            <div class="pill">СВЯЗАТЬСЯ</div>
-        </a>
-    </div>
+    <nav class="navbar">
+        <a href="#home" class="nav-link">Главная</a>
+        <a href="#about" class="nav-link">О проекте</a>
+        <a href="#features" class="nav-link">Обзор</a>
+        <a href="https://t.me/DaWikcx" target="_blank" class="nav-link">Связаться</a>
+    </nav>
 
-    <section class="benefits">
-        <h2>Преимущества</h2>
-        <div class="benefits-grid">
-            <div class="card">
-                <h3>Содержание</h3>
-                <p>Наши визуальные эффекты полны функцианалом и уникальными визуальнымми эффектами.</p>
-            </div>
-            <div class="card">
-                <h3>Доступность</h3>
-                <p> Наш клиент разрешшен на всех серверах! самые популярные сервера где мы разрешены - FunTime, ReallyWorld, WellMine, HolyWorld и так далее 
-                </p>
-            </div>
-            <div class="card">
-                <h3>Поддержка</h3>
-                <p>Поддержка всегда отвечает на ваши вопросы, чтобы не случилось!</p>
-            </div>
+    <section id="home" class="section">
+        <h1 style="font-size: clamp(2rem, 8vw, 5rem); letter-spacing: 10px; margin: 0; text-shadow: 0 0 30px rgba(125,42,232,0.5);">PULSE VISUALS</h1>
+        <p style="font-size: 1.2rem; opacity: 0.8; margin-top: 10px;">Лучшие визуальные эффекты в твоем распоряжении.</p>
+        <br>
+        <a href="https://pulsevisuals.pro/" target="_blank" class="pill">ПЕРЕЙТИ НА САЙТ</a>
+    </section>
+
+    <section id="about" class="section">
+        <div class="content-card">
+            <h2 style="font-size: 2.5rem; color: #7d2ae8;">О проекте</h2>
+            <p style="line-height: 1.8; font-size: 1.1rem; opacity: 0.9;">
+                Мы создаем визуальные моды для Minecraft как для PvP, так и для PvE. Наша цель — предоставить игрокам уникальные и качественные визуальные эффекты, которые улучшат игровой опыт и позволят выделиться среди других.
+            </p>
         </div>
     </section>
 
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAXCAMAAAAvFN9lAAAAaVBMVEVHcExdQN5aPdlZPNhfQuJmSOtjRediROZiReZjRehYPNdgQuNgQuJVOdJgQuNcP9xZPNheQeBeQeBgQ+NbP9xaPdpdQN9VOdJaPdpZPNhVOdJTN89UONBSNsxUONFRNcxPM8hQNMpOM8ivHtmzAAAAI3RSTlMAHV4FUOKN/8PhLeyrGPhpl//k1MENOUDv/3zX6PbI/6joxapGaGQAAAC2SURBVHgBdc3RDoMgDIXhAk4c6qRMcDAV9f0fcjpuNNIv6dWfk8IF40ASxYPRtZSlIJeVfBZUVLWUTUtE/pKy7oio0bxlpbKt7bHZx6XNRWewsw2aIRe7j3dQGGwyU6H9x4LViPweWe974Vyo0bjkFIevD+3oPR7kAdSQKNFNvoDQJ9UB5jGZuY6jAstOYP7+xbjfbOGqTZa40wKy1LpHDoQQ4+qoyLa4MaDwabFkZEsQQBpuL3+BjA4LC5LeMgAAAABJRU5ErkJggg==" class="corner-logo" alt="Logo">
+    <section id="features" class="section">
+        <h2 style="margin-bottom: 20px; font-size: 2.5rem;">Наш видеообзор</h2>
+        <div class="video-wrapper">
+            <iframe 
+                src="https://www.youtube.com/embed/0XMJi4VXB1U" 
+                title="YouTube video player" 
+                allowfullscreen>
+            </iframe>
+        </div>
+    </section>
 
-</body> 
-
+</body>
 </html>
